@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
@@ -11,15 +12,6 @@
     tools:context="com.example.gross.sendtocloudinary.MainActivity">
 
 
-    <com.facebook.login.widget.LoginButton
-        android:id="@+id/btn_login"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="211dp" />
-
     <TextView
 
         android:layout_width="match_parent"
@@ -30,4 +22,36 @@
         android:gravity="center"
         android:textStyle="bold"
         android:id="@+id/txtLogin" />
+
+    <ImageView
+        android:layout_width="100dp"
+        app:srcCompat="@drawable/com_facebook_button_login_background"
+        android:layout_below="@+id/txtLogin"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="41dp"
+        android:id="@+id/imgViewAvatar"
+        android:layout_height="100dp"
+        android:visibility="invisible"/>
+
+    <com.facebook.login.widget.LoginButton
+        android:id="@+id/btn_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="39dp"
+        android:layout_below="@+id/imgViewAvatar"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:text="@string/mContinue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnContinue"
+        android:layout_marginTop="40dp"
+        android:onClick="onBtnContinueClick"
+        android:layout_below="@+id/btn_login"
+        android:layout_alignLeft="@+id/btn_login"
+        android:layout_alignStart="@+id/btn_login"
+        android:layout_alignRight="@+id/btn_login"
+        android:layout_alignEnd="@+id/btn_login" />
 </RelativeLayout>

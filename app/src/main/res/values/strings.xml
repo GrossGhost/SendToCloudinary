@@ -2,5 +2,12 @@
     <string name="app_name">SendToCloudinary</string>
     <string name="facebook_app_id">638719582996967</string>
     <string name="fb_login_protocol_scheme">fb638719582996967</string>
+    <string name="title_activity_photo">PhotoActivity</string>
+    <string name="action_settings">Settings</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="load_button">LOAD</string>
+    <string name="LoginError">Login Error \n</string>
+    <string name="LoginCanceled">Login Canceled</string>
+    <string name="mContinue">Continue</string>
 
 </resources>
