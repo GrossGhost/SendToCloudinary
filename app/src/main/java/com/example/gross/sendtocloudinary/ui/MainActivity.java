@@ -25,7 +25,6 @@ import com.squareup.picasso.Picasso;
 public class MainActivity extends AppCompatActivity {
 
     private static final String LOGINED_DATA = "LoginedData";
-    private static final String ACCESS_TOKEN = "AccessToken";
     private static final String PROFILE_NAME = "ProfileName";
     private static final String PROFILE_PHOTO = "ProfilePhoto";
 
@@ -34,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView txtLoginStatus;
     private ImageView imgViewAvatar;
     private CallbackManager callbackManager;
-    private String accessToken, currentProfileName, uriPhoto;
+    private String currentProfileName, uriPhoto;
     private ProfileTracker profileTracker;
     private AccessTokenTracker accessTokenTracker;
     private SharedPreferences sPref;
@@ -50,9 +49,7 @@ public class MainActivity extends AppCompatActivity {
         imgViewAvatar = (ImageView) findViewById(R.id.imgViewAvatar);
 
         sPref = getSharedPreferences(LOGINED_DATA, MODE_PRIVATE);
-        if (sPref.contains(ACCESS_TOKEN)) {
-            accessToken = sPref.getString(ACCESS_TOKEN, "");
-        }
+
         if (sPref.contains(PROFILE_NAME)) {
             txtLoginStatus.setText("Logined as " + sPref.getString(PROFILE_NAME, ""));
         }
@@ -70,7 +67,6 @@ public class MainActivity extends AppCompatActivity {
                 if (currentAccessToken == null) {
                     txtLoginStatus.setText("logged out");
                     imgViewAvatar.setVisibility(View.INVISIBLE);
-                    accessToken = null;
 
                     SharedPreferences.Editor ed = sPref.edit();
                     ed.clear();
@@ -78,7 +74,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         };
-
     }
 
     @Override
@@ -92,12 +87,6 @@ public class MainActivity extends AppCompatActivity {
         btnLogin.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-
-                accessToken = loginResult.getAccessToken().getToken();
-                SharedPreferences.Editor ed = sPref.edit();
-                ed.putString(ACCESS_TOKEN, accessToken);
-                ed.apply();
-
 
                 profileTracker = new ProfileTracker() {
                     @Override
@@ -134,7 +123,6 @@ public class MainActivity extends AppCompatActivity {
                 txtLoginStatus.setText(getString(R.string.LoginError) + error);
             }
         });
-
     }
 
     @Override
@@ -144,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onBtnContinueClick(View view) {
-        if (accessToken != null) {
+        if (AccessToken.getCurrentAccessToken() != null) {
             Intent intentPhotoActivity = new Intent(getApplicationContext(), PhotoActivity.class);
             startActivity(intentPhotoActivity);
         } else {
