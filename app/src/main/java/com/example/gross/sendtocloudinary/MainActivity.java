@@ -2,11 +2,9 @@ package com.example.gross.sendtocloudinary;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -71,12 +69,12 @@ public class MainActivity extends AppCompatActivity {
                 if (currentAccessToken == null){
                     txtLoginStatus.setText("logged out");
                     imgViewAvatar.setVisibility(View.INVISIBLE);
+                    accessToken = null;
 
                     SharedPreferences.Editor ed = sPref.edit();
                     ed.clear();
                     ed.apply();
                 }
-
             }
         };
 
@@ -98,6 +96,8 @@ public class MainActivity extends AppCompatActivity {
                 SharedPreferences.Editor ed = sPref.edit();
                 ed.putString(ACCESS_TOKEN, accessToken);
                 ed.apply();
+
+
 
                 profileTracker = new ProfileTracker() {
                     @Override
@@ -135,6 +135,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        accessTokenTracker.stopTracking();
     }
 
     public void onBtnContinueClick(View view) {
