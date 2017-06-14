@@ -28,7 +28,6 @@ public class MainActivity extends AppCompatActivity {
     private static final String PROFILE_NAME = "ProfileName";
     private static final String PROFILE_PHOTO = "ProfilePhoto";
 
-
     private LoginButton btnLogin;
     private TextView txtLoginStatus;
     private ImageView imgViewAvatar;
