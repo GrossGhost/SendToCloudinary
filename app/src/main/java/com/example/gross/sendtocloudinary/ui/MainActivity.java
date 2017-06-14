@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView txtLoginStatus;
     private ImageView imgViewAvatar;
     private CallbackManager callbackManager;
-    private String accessToken, currentProfileName,uriPhoto;
+    private String accessToken, currentProfileName, uriPhoto;
     private ProfileTracker profileTracker;
     private AccessTokenTracker accessTokenTracker;
     private SharedPreferences sPref;
@@ -50,13 +50,13 @@ public class MainActivity extends AppCompatActivity {
         imgViewAvatar = (ImageView) findViewById(R.id.imgViewAvatar);
 
         sPref = getSharedPreferences(LOGINED_DATA, MODE_PRIVATE);
-        if(sPref.contains(ACCESS_TOKEN)){
+        if (sPref.contains(ACCESS_TOKEN)) {
             accessToken = sPref.getString(ACCESS_TOKEN, "");
         }
-        if(sPref.contains(PROFILE_NAME)){
+        if (sPref.contains(PROFILE_NAME)) {
             txtLoginStatus.setText("Logined as " + sPref.getString(PROFILE_NAME, ""));
         }
-        if(sPref.contains(PROFILE_PHOTO)){
+        if (sPref.contains(PROFILE_PHOTO)) {
             Picasso.with(getApplicationContext()).load(sPref.getString(PROFILE_PHOTO, "")).into(imgViewAvatar);
             imgViewAvatar.setVisibility(View.VISIBLE);
         }
@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
         accessTokenTracker = new AccessTokenTracker() {
             @Override
             protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken currentAccessToken) {
-                if (currentAccessToken == null){
+                if (currentAccessToken == null) {
                     txtLoginStatus.setText("logged out");
                     imgViewAvatar.setVisibility(View.INVISIBLE);
                     accessToken = null;
@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private  void loginWithFC(){
+    private void loginWithFC() {
         btnLogin.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
@@ -97,7 +97,6 @@ public class MainActivity extends AppCompatActivity {
                 SharedPreferences.Editor ed = sPref.edit();
                 ed.putString(ACCESS_TOKEN, accessToken);
                 ed.apply();
-
 
 
                 profileTracker = new ProfileTracker() {
@@ -111,12 +110,12 @@ public class MainActivity extends AppCompatActivity {
 
                         txtLoginStatus.setText("Logined as " + currentProfileName);
 
-                        uriPhoto = currentProfile.getProfilePictureUri(200,200).toString();
+                        uriPhoto = currentProfile.getProfilePictureUri(200, 200).toString();
 
                         ed.putString(PROFILE_PHOTO, uriPhoto);
                         ed.apply();
 
-                        if (uriPhoto != null){
+                        if (uriPhoto != null) {
                             Picasso.with(getApplicationContext()).load(uriPhoto).into(imgViewAvatar);
                             imgViewAvatar.setVisibility(View.VISIBLE);
                         }
@@ -145,11 +144,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onBtnContinueClick(View view) {
-        if(accessToken != null) {
+        if (accessToken != null) {
             Intent intentPhotoActivity = new Intent(getApplicationContext(), PhotoActivity.class);
             startActivity(intentPhotoActivity);
-        }else{
-            Toast.makeText(getApplicationContext(),"LOGIN PLEASE!",Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(getApplicationContext(), "LOGIN PLEASE!", Toast.LENGTH_LONG).show();
         }
     }
 }

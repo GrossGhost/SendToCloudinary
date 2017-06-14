@@ -6,12 +6,13 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DB extends SQLiteOpenHelper {
 
-    public static final int DATABASE_VERSION = 1;
-    public static final String DATABASE_NAME = "downloadedToCloudImgDb";
+    private static final int DATABASE_VERSION = 1;
+    private static final String DATABASE_NAME = "downloadedToCloudImgDb";
     public static final String TABLE_CLOUDINARY_IMG = "cloudImg";
 
-    public static final String KEY_ID = "_id";
-    public static final String KEY_IMG_ID = "imageId";
+    private static final String KEY_ID = "_id";
+    static final String KEY_IMG_ID = "imageId";
+    public static final String KEY_IMG_URL = "imageUrl";
 
     public DB(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -20,7 +21,7 @@ public class DB extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("create table " + TABLE_CLOUDINARY_IMG + "(" + KEY_ID
-                + " integer primary key," + KEY_IMG_ID + " text" + ")");
+                + " integer primary key," + KEY_IMG_ID + " text," + KEY_IMG_URL + " text" + ")");
     }
 
     @Override

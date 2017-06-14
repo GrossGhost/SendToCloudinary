@@ -31,10 +31,11 @@ public class LoadFragment extends Fragment implements View.OnClickListener {
     public static final String BROADCAST_ACTION = "brodcast";
     public static final String IS_DOWNLOADED = "isDownloaded";
 
-    private ImageView imgView1,imgView2,imgView3,imgView4,imgView5;
+    private ImageView imgView1, imgView2, imgView3, imgView4, imgView5;
     private View rootView;
     private static SparseArray<File> toUpload = new SparseArray<>();
     private int selectedImgViewID;
+    private BroadcastReceiver br;
 
     @Nullable
     @Override
@@ -43,19 +44,33 @@ public class LoadFragment extends Fragment implements View.OnClickListener {
 
         initializeViews();
 
-        BroadcastReceiver br = new BroadcastReceiver() {
+        if (toUpload.size() != 0) {
+            restoreImgViewIfOrientationChanged();
+        }
+
+        br = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                if (intent.getBooleanExtra(IS_DOWNLOADED,false)){
+                if (intent.getBooleanExtra(IS_DOWNLOADED, false)) {
                     clearDownloadedImages();
                 }
             }
 
         };
         IntentFilter iFilterIsDownloaded = new IntentFilter(BROADCAST_ACTION);
-        getActivity().registerReceiver(br,iFilterIsDownloaded);
+        getActivity().registerReceiver(br, iFilterIsDownloaded);
 
         return rootView;
+    }
+
+    private void restoreImgViewIfOrientationChanged() {
+
+        ImageView imageView;
+        for (int i = 0, arraySize = toUpload.size(); i < arraySize; i++) {
+            imageView = (ImageView) rootView.findViewById(toUpload.keyAt(i));
+            Picasso.with(getContext()).load(toUpload.get(toUpload.keyAt(i))).resize(300, 240).into(imageView);
+
+        }
     }
 
     private void initializeViews() {
@@ -78,37 +93,40 @@ public class LoadFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
 
-        if (v.getId() == R.id.btnLoad){
-            if(toUpload.size() ==0 ){
-                Toast.makeText(getContext(),"Select image first!",Toast.LENGTH_LONG).show();
-            }else {
-                getActivity().startService(new Intent(getContext(),PhotoLoadService.class));
+        if (v.getId() == R.id.btnLoad) {
+            if (toUpload.size() == 0) {
+                Toast.makeText(getContext(), "Select image first!", Toast.LENGTH_LONG).show();
+            } else {
+                getActivity().startService(new Intent(getContext(), PhotoLoadService.class));
             }
 
-        }else {
+        } else {
             selectedImgViewID = v.getId();
-            EasyImage.openGallery(LoadFragment.this,0);
+            EasyImage.openGallery(LoadFragment.this, 0);
         }
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-      super.onActivityResult(requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
 
         EasyImage.handleActivityResult(requestCode, resultCode, data, getActivity(), new EasyImage.Callbacks() {
             @Override
-            public void onImagePickerError(Exception e, EasyImage.ImageSource source, int type) {}
+            public void onImagePickerError(Exception e, EasyImage.ImageSource source, int type) {
+            }
 
             @Override
             public void onImagesPicked(@NonNull List<File> imageFiles, EasyImage.ImageSource source, int type) {
 
-                toUpload.put(selectedImgViewID,imageFiles.get(0));
-                ImageView selectedImgView =(ImageView) rootView.findViewById(selectedImgViewID);
-                Picasso.with(getContext()).load(imageFiles.get(0)).resize(300,240).into(selectedImgView);
+                toUpload.put(selectedImgViewID, imageFiles.get(0));
+                ImageView selectedImgView = (ImageView) rootView.findViewById(selectedImgViewID);
+                Picasso.with(getContext()).load(imageFiles.get(0)).resize(300, 240).into(selectedImgView);
 
             }
+
             @Override
-            public void onCanceled(EasyImage.ImageSource source, int type) {}
+            public void onCanceled(EasyImage.ImageSource source, int type) {
+            }
         });
 
     }
@@ -117,9 +135,10 @@ public class LoadFragment extends Fragment implements View.OnClickListener {
     public void onDestroyView() {
         super.onDestroyView();
         EasyImage.clearConfiguration(getContext());
+        getActivity().unregisterReceiver(br);
     }
 
-    public void clearDownloadedImages(){
+    public void clearDownloadedImages() {
 
         imgView1.setImageResource(android.R.drawable.ic_menu_add);
         imgView2.setImageResource(android.R.drawable.ic_menu_add);

@@ -32,7 +32,7 @@ public class PhotoLoadService extends Service {
     private boolean isDownloaded = true;
     private DB dbHelper = new DB(this);
     private static SparseArray<File> toUpload = LoadFragment.getToUpload();
-    private Cloudinary cloudinary =  new Cloudinary(ObjectUtils.asMap(
+    private Cloudinary cloudinary = new Cloudinary(ObjectUtils.asMap(
             "cloud_name", CLOUD_NAME, "api_key", API_KEY, "api_secret", API_SECRET));
 
 
@@ -62,15 +62,15 @@ public class PhotoLoadService extends Service {
                 try {
                     uploadResult = cloudinary.uploader().upload(toUpload.valueAt(i), ObjectUtils.emptyMap());
 
-                    contentValues.put(DB.KEY_IMG_ID,(String) uploadResult.get("public_id"));
-                    database.insert(DB.TABLE_CLOUDINARY_IMG,null,contentValues);
+                    contentValues.put(DB.KEY_IMG_ID, (String) uploadResult.get("public_id"));
+                    contentValues.put(DB.KEY_IMG_URL, (String) uploadResult.get("url"));
+                    database.insert(DB.TABLE_CLOUDINARY_IMG, null, contentValues);
 
                 } catch (IOException e) {
                     isDownloaded = false;
                     e.printStackTrace();
                 }
             }
-
             return null;
         }
 
@@ -78,12 +78,11 @@ public class PhotoLoadService extends Service {
         protected void onPostExecute(String s) {
             broadcastIntent.putExtra(IS_DOWNLOADED, isDownloaded);
             sendBroadcast(broadcastIntent);
-            if (isDownloaded){
+            if (isDownloaded) {
                 Toast.makeText(getApplicationContext(), "Image uploaded.", Toast.LENGTH_SHORT).show();
-            }else{
+            } else {
                 Toast.makeText(getApplicationContext(), "Cant uploaded Image(s).", Toast.LENGTH_SHORT).show();
             }
-
             stopSelf();
             super.onPostExecute(s);
         }
