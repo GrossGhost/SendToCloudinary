@@ -1,4 +1,4 @@
-package com.example.gross.sendtocloudinary;
+package com.example.gross.sendtocloudinary.ui;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -7,9 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-/**
- * Created by Gross on 09.06.2017.
- */
+import com.example.gross.sendtocloudinary.R;
 
 public class ShowFragment extends Fragment {
     @Nullable

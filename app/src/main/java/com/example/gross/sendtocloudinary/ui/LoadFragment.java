@@ -1,4 +1,4 @@
-package com.example.gross.sendtocloudinary;
+package com.example.gross.sendtocloudinary.ui;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -16,6 +16,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.gross.sendtocloudinary.PhotoLoadService;
+import com.example.gross.sendtocloudinary.R;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;

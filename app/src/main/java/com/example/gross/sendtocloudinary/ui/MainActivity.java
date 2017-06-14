@@ -1,4 +1,4 @@
-package com.example.gross.sendtocloudinary;
+package com.example.gross.sendtocloudinary.ui;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.gross.sendtocloudinary.R;
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
